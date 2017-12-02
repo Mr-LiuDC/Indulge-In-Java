@@ -8,7 +8,9 @@
 
 maven原型就是maven archetype。
 
-### jar类型	maven-archetype-quickstart
+### jar类型 maven-archetype-quickstart
+
+### war类型参考另一项目[maven-archetype-webapp](https://github.com/Mr-LiuDC/Indulge-In-Java/tree/master/maven-archetype-webapp)
 
 
 **工具**：eclipse、maven
