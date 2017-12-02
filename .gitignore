@@ -51,3 +51,5 @@ local.properties
 Servers/
 .classpath
 .project
+
+.vscode/
