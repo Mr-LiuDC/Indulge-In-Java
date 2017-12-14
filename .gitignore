@@ -53,5 +53,8 @@ Servers/
 .project
 
 .vscode/
-/alittler-javaweb-practice/
-/alittler-java-practice/
+alittler-javaweb-practice/
+
+alittler-java-practice/
+
+target/
