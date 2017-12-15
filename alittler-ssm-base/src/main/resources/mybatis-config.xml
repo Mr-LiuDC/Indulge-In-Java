@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration 
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<!-- 命名空间 -->
+	<!-- 定义别名：简化 -->
+	<typeAliases>
+		<typeAlias alias="User" type="cn.alittler.ssmbase.entity.User" />
+		<typeAlias type="cn.alittler.ssmbase.entity.Person" alias="person" />
+		<typeAlias type="cn.alittler.ssmbase.entity.QueryCondition" alias="qc" />
+	</typeAliases>
+
+	<!-- 映射map -->
+	<mappers>
+		<!-- 注解开发就不用再配置，否则提示重复 -->
+		<!-- <mapper resource="mapper/UserMapper.xml" /> -->
+	</mappers>
+</configuration>
