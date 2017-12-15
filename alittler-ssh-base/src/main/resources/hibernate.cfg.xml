@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+	<session-factory>
+
+		<!-- 1.数据库连接信息 --><!-- 整合Spring后这是配置信息再applicationContext.xml和jdbc.properties中 -->
+		<!-- connection.url本机也可这样 jdbc:MySQL:///database -->
+		<property name="dialect">
+			org.hibernate.dialect.MySQL5InnoDBDialect
+		</property>
+		<!-- <property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property> 
+			<property name="connection.driver_class">com.mysql.jdbc.Driver</property> 
+			<property name="connection.url">jdbc:MySQL://localhost:3306/itcastoa</property> 
+			<property name="connection.username">liudecai</property> <property name="connection.password">liudecai</property> -->
+		<!-- 2.其他配置 -->
+		<property name="show_sql">true</property><!-- Echo all executed SQL to stdout -->
+		<property name="hbm2ddl.auto">update</property><!-- Drop and re-create the database 
+			schema on startup -->
+
+		<!-- 3.导入映射文件 -->
+		<!-- <mapping resource="" /> -->
+		<!-- 
+		<mapping resource="com/ldc/ssh/bean/Department.hbm.xml" /> 
+		<mapping resource="com/ldc/ssh/bean/Role.hbm.xml" /> 
+		<mapping resource="com/ldc/ssh/bean/User.hbm.xml" /> 
+		-->
+		<mapping resource="cn/alittler/sshbase/bean/Department.hbm.xml" />
+		<mapping resource="cn/alittler/sshbase/bean/Role.hbm.xml" />
+		<mapping resource="cn/alittler/sshbase/bean/User.hbm.xml" />
+
+	</session-factory>
+
+</hibernate-configuration>
