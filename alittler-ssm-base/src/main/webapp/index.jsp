@@ -1,11 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <html>
-  <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Title</title>
-  </head>
-  <body>
-	<h2>Hello World! This is a JSP page. </h2>
-  </body>
+<head>
+<title>Spring+Spring-webmvc+MyBatis整合</title>
+</head>
+<body>
+	<h2>SSM index.jsp page</h2>
+	<h2>Spring+Spring-webmvc+MyBatis整合</h2>
+</body>
 </html>

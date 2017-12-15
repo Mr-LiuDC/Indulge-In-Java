@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace：映射文件的命名空间，规范是映射文件的包的全路径 -->
+<mapper namespace="cn.alittler.ssmbase.dao.PersonDao">
+	<!-- resultMap:组装从数据库表中查询出来的实体 type:实体的数据类型 id:resultMap的唯一标识 -->
+	<resultMap type="person" id="BaseResultMap">
+		<!-- id列只有一个 column：表的字段名 property：实体类的属性名 -->
+
+		<id column="person_id" property="personId" />
+		<id column="name" property="name" />
+		<id column="gender" property="gender" />
+		<id column="person_addr" property="personAddr" />
+		<id column="birthday" property="birthday" />
+	</resultMap>
+	<!-- id: sql的唯一标识 parameterType:传递给sql的参数的数据类型 resultType:返回数据结果的类型 #{id}:用于接收参数的语法,{}中的内容如果是接收一个参数内容任意 
+		Preparing: select * from person_test where id = ? #{}使用预编译方式生成sql，防止sql注入 -->
+	<select id="selectPersonById" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select * from ssmbase_person where person_id = #{id}
+	</select>
+
+
+	<!-- sql片段，使用的时候直接替换，优点：常用的公用的sql片段 -->
+	<sql id="column">
+		person_id,name,gender,person_addr,birthday
+	</sql>
+
+
+	<!-- ==========================库表更新================================== -->
+
+	<insert id="insert" parameterType="person">
+		<!-- selectKey:做主键返回 keyProperty:接收返回主键的属性 order:insert语句和生成主键sql的执行顺序，MySQL是After，而oracle是before 
+			resultType:返回主键的数据类型 生成主键的sql语句:select last_insert_id() -->
+		<selectKey keyProperty="personId" order="AFTER" resultType="java.lang.Integer">
+			select last_insert_id()
+		</selectKey>
+		insert into ssmbase_person (person_id, name, gender, person_addr,
+		birthday)
+		values(#{personId},#{name},#{gender},#{personAddr},#{birthday})
+	</insert>
+
+	<update id="update" parameterType="person">
+		<!-- 说明：还有一个问题，如果只修改一个属性其他的会变成null，解决方案：见下面的动态sql -->
+		update ssmbase_person p set
+		p.name = #{name},
+		p.gender = #{gender},
+		p.person_addr = #{personAddr},
+		p.birthday = #{birthday}
+		where
+		p.person_id = #{personId}
+	</update>
+
+	<update id="delete" parameterType="int">
+		delete from ssmbase_person
+		where person_id = #{id}
+	</update>
+
+
+
+	<!-- ==========================动态sql================================== -->
+
+	<!-- <where>用于动态条件组合查询，可以自动根据情况去掉where后的第一个and -->
+	<select id="selectPersonByCondition" parameterType="qc"
+		resultMap="BaseResultMap">
+		select * from ssmbase_person p
+		<where>
+			<if test="name !=null">
+				p.name like '%${name}%'
+			</if>
+			<if test="gender !=null">
+				and p.gender = #{gender}
+			</if>
+			<if test="personAddr !=null">
+				and p.person_addr like '%${personAddr}%'
+			</if>
+			<if test="birthday !=null">
+				<![CDATA[
+					and p.birthday < #{birthday} 
+				]]>
+			</if>
+		</where>
+	</select>
+
+	<!-- 动态修改，可以解决修改一个字段其他字段变null的问题. <set>标签能处理掉最后一个逗号。 不要忘记加上：t.person_id 
+		= #{personId}。 MyBatis的逆向工程没有解决t.person_id = #{personId}这一问题 -->
+	<update id="dynamicUpdate" parameterType="person">
+		update ssmbase_person p
+		<set>
+			p.person_id = #{personId},	<!-- 加上这句可解决都为空的问题 -->
+			<if test="name !=null">
+				p.name = #{name},
+			</if>
+			<if test="gender !=null">
+				p.gender = #{gender},
+			</if>
+			<if test="personAddr !=null">
+				p.person_addr = #{personAddr},
+			</if>
+			<if test="birthday !=null">
+				p.birthday = #{birthday}
+			</if>
+		</set>
+		where p.person_id = #{personId}
+	</update>
+
+</mapper>
