@@ -1,0 +1,3 @@
+th:action="@{/employee/(${id})?(update):(save)}"
+
+<p th:text="(*{id})?(update):(save)"></p>
