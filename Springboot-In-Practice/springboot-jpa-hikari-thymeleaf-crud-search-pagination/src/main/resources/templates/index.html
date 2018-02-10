@@ -1,0 +1,130 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
+<head>
+    <title>Spring Boot CRUD Example Index Page</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <div class="row">
+        <div class="col-md-offset-1 col-md-10">
+
+            <!-- Save Alert Messages -->
+            <div th:if="${saveEmployee eq 'unsuccess'}">
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <strong>Error!</strong> Employee Data Not Saved.
+                </div>
+            </div>
+            <div th:if="${saveEmployee eq 'success'}">
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <strong>Success!</strong> Employee Data Saved Successfully.
+                </div>
+            </div>
+
+            <!-- Deletion Alert Messages -->
+            <div th:if="${deletion eq 'unsuccess'}">
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <strong>Error!</strong> Employee Data Not Deleted.
+                </div>
+            </div>
+            <div th:if="${deletion eq 'success'}">
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <strong>Success!</strong> Employee Data Deleted Successfully.
+                </div>
+            </div>
+
+            <!-- Edit Alert Message -->
+            <div th:if="${status eq 'notfound'}">
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <strong>Error!</strong> Invalid Employee.
+                </div>
+            </div>
+            <div th:if="${edit eq 'unsuccess'}">
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <strong>Error!</strong> Employee Data Not Edited.
+                </div>
+            </div>
+            <div th:if="${edit eq 'success'}">
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <strong>Success!</strong> Employee Data Edited Successfully.
+                </div>
+            </div>
+
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Search Employee</h3>
+                </div>
+                <div class="panel-body">
+                    <form class="form-inline" th:action="@{/}" method="get">
+                        <div class="form-group">
+                            <label class="sr-only" for="name">Employee Name</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Employee Name"
+                                   th:if="${name} != null" th:value="${name}" />
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="position">Employee Position</label>
+                            <input type="text" class="form-control" id="position" name="position"
+                                   placeholder="Employee Position" th:if="${position} != null" th:value="${position}" />
+                        </div>
+                        <button type="submit" class="btn btn-success pull-right">Searching...</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-bottom:50px;">
+        <div class="col-md-offset-1 col-md-10">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <span class="panel-title">All Employees</span>
+                    <span class="panel-title pull-right"><a th:href="@{/employee/formUI}">Add Employee</a></span>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr class="btn-success">
+                            <th><a class="sorted" sd:pagination-sort="id">ID</a></th>
+                            <th><a class="sorted" sd:pagination-sort="empName">Name</a></th>
+                            <th><a class="sorted" sd:pagination-sort="empPosition">Position</a></th>
+                            <th><a class="sorted" sd:pagination-sort="empSalary">Salary</a></th>
+                            <th>Operation</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="emp : ${allEmployees}">
+                            <td th:text="${emp.id}"></td>
+                            <td th:text="${emp.empName}"></td>
+                            <td th:text="${emp.empPosition}"></td>
+                            <td th:text="${emp.empSalary}"></td>
+                            <td align="center">
+                                <a th:href="@{/employee/edit/{id}(id=${emp.id})}"><span
+                                        class="glyphicon glyphicon-edit"></span></a> &nbsp; &nbsp;
+                                <a th:href="@{/employee/delete/{id}(id=${emp.id})}"><span
+                                        class="glyphicon glyphicon-trash"></span></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div sd:pagination-summary="">info</div>
+                        </div>
+                        <div class="col-sm-8">
+                            <nav class="pull-right">
+                                <ul class="pagination" sd:pagination="full">
+                                    <!-- Pagination created by SpringDataDialect, this content is just for mockup -->
+                                    <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                                    <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
