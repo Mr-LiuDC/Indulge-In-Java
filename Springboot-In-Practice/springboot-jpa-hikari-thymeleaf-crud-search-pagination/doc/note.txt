@@ -1,3 +1,7 @@
 th:action="@{/employee/(${id})?(update):(save)}"
 
 <p th:text="(*{id})?(update):(save)"></p>
+
+重复申明命名空间会导致页面加载不出来
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
