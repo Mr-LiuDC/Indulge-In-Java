@@ -143,7 +143,7 @@ public class UserApi {
 	@GetMapping
 	@ApiOperation(value = "分页查询用户", notes = "分页查询用户信息")
 	public ModelMap listUserPage(
-			@RequestParam(value = "pageNoStr", required = false, defaultValue = "1") String pageNoStr,
+			@RequestParam(value = "pageNoStr", required = false, defaultValue = "0") String pageNoStr,
 			@RequestParam(value = "pageSizeStr", required = false, defaultValue = "5") String pageSizeStr) {
 		ModelMap modelMap = new ModelMap();
 		int pageNo = 1;
