@@ -15,99 +15,104 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import springboot.domain.Article;
 import springboot.domain.User;
+import springboot.repositroy.ArticleRepositroy;
 import springboot.repositroy.UserRepositroy;
 
 /**
- * 用户操作API
+ * 文章操作API
  * 
  * @author LiuDeCai
  *
  */
 @RestController
-@RequestMapping(value = "/api/user")
-@Api("用户操作接口")
-public class UserApi {
+@RequestMapping(value = "/api/article")
+@Api("文章操作接口")
+public class ArticleApi {
 
+	@Autowired
+	private ArticleRepositroy articleRepositroy;
 	@Autowired
 	private UserRepositroy userRepositroy;
 
 	/**
-	 * 新增用户信息
+	 * 新增文章信息
 	 * 
-	 * @param name
-	 * @param password
-	 * @param modelMap
+	 * @param title
+	 * @param content
+	 * @param userId
 	 * @return
 	 */
 	@PostMapping()
-	@ApiOperation(value = "新增用户", notes = "新增用户信息")
-	public ModelMap saveUser(@RequestParam String name, @RequestParam String password) {
+	@ApiOperation(value = "新增文章", notes = "新增文章信息")
+	public ModelMap saveArticle(@RequestParam String title, @RequestParam String content, @RequestParam String userId) {
 		ModelMap modelMap = new ModelMap();
-		User user = new User();
-		user.setName(name);
-		user.setPassword(password);
-		User saveResult = userRepositroy.save(user);
+		Article article = new Article();
+		article.setTitle(title);
+		article.setContent(content);
+		User user = userRepositroy.getOne(Long.parseLong(userId));
+		article.setUser(user);
+		Article saveResult = articleRepositroy.save(article);
 		if (saveResult != null) {
-			modelMap.addAttribute("message", "成功添加用户信息");
-			modelMap.addAttribute("user", saveResult);
+			modelMap.addAttribute("message", "成功添加文章");
+			modelMap.addAttribute("article", saveResult);
 		} else {
-			modelMap.addAttribute("message", "添加用户信息失败");
+			modelMap.addAttribute("message", "添加文章失败");
 		}
 		return modelMap;
 	}
 
 	/**
-	 * 根据ID删除用户信息
+	 * 根据文章ID删除文章信息
 	 * 
 	 * @param id
-	 * @param modelMap
 	 * @return
 	 */
 	@DeleteMapping("{id}")
-	@ApiOperation(value = "删除用户", notes = "删除用户信息")
-	public ModelMap deleteUserById(@PathVariable String id) {
+	@ApiOperation(value = "删除文章", notes = "根据ID删除文章信息")
+	public ModelMap deleteArticleById(@PathVariable String id) {
 		ModelMap modelMap = new ModelMap();
 		try {
 			Long idNum = Long.parseLong(id);
-			User user = userRepositroy.findOne(idNum);
-			if (user == null) {
-				modelMap.addAttribute("message", "要删除的用户不存在");
+			Article article = articleRepositroy.findOne(idNum);
+			if (article == null) {
+				modelMap.addAttribute("message", "要删除的文章不存在");
 			}
-			userRepositroy.delete(user);
-			return modelMap.addAttribute("message", "成功删除用户");
+			articleRepositroy.delete(article);
+			return modelMap.addAttribute("message", "成功删除文章");
 		} catch (Exception e) {
 			return modelMap.addAttribute("message", "参数不合法");
 		}
 	}
 
 	/**
-	 * 根据ID更新用户信息
+	 * 根据ID更新文章信息
 	 * 
 	 * @param id
-	 * @param name
-	 * @param password
-	 * @param modelMap
+	 * @param title
+	 * @param content
 	 * @return
 	 */
 	@PutMapping("{id}")
-	@ApiOperation(value = "更新用户", notes = "更新用户信息")
-	public ModelMap updateUserById(@PathVariable String id, @RequestParam String name, @RequestParam String password) {
+	@ApiOperation(value = "更新文章", notes = "更新文章信息")
+	public ModelMap updateArticleById(@PathVariable String id, @RequestParam String title,
+			@RequestParam String content) {
 		ModelMap modelMap = new ModelMap();
 		try {
 			Long idNum = Long.parseLong(id);
-			User user = userRepositroy.findOne(idNum);
-			if (user == null) {
-				modelMap.addAttribute("message", "要更新的用户不存在");
+			Article article = articleRepositroy.findOne(idNum);
+			if (article == null) {
+				modelMap.addAttribute("message", "要更新的文章不存在");
 			}
-			user.setName(name);
-			user.setPassword(password);
-			User saveResult = userRepositroy.save(user);
+			article.setTitle(title);
+			article.setContent(content);
+			Article saveResult = articleRepositroy.save(article);
 			if (saveResult != null) {
-				modelMap.addAttribute("message", "成功更新用户信息");
-				modelMap.addAttribute("user", saveResult);
+				modelMap.addAttribute("message", "成功更新文章信息");
+				modelMap.addAttribute("article", saveResult);
 			} else {
-				modelMap.addAttribute("message", "更新用户信息失败");
+				modelMap.addAttribute("message", "更新文章信息失败");
 			}
 			return modelMap;
 		} catch (Exception e) {
@@ -116,38 +121,36 @@ public class UserApi {
 	}
 
 	/**
-	 * 根据ID查询用户信息
+	 * 根据ID查询文章信息
 	 * 
 	 * @param id
 	 * @return
 	 */
 	@GetMapping("{id}")
-	@ApiOperation(value = "查询用户", notes = "根据ID查询用户信息")
-	public ModelMap getUserById(@PathVariable String id) {
+	@ApiOperation(value = "查询文章", notes = "根据ID查询文章信息")
+	public ModelMap getArticleById(@PathVariable String id) {
 		ModelMap modelMap = new ModelMap();
 		try {
 			Long idNum = Long.parseLong(id);
-			User user = userRepositroy.findOne(idNum);
-			if (user == null) {
-				modelMap.addAttribute("message", "要查询的用户不存在");
+			Article article = articleRepositroy.findOne(idNum);
+			if (article == null) {
+				modelMap.addAttribute("message", "要查询的文章不存在");
 			}
-			return modelMap.addAttribute("user", user);
+			return modelMap.addAttribute("article", article);
 		} catch (Exception e) {
 			return modelMap.addAttribute("message", "参数不合法");
 		}
 	}
 
 	/**
-	 * 分页查询用户信息
+	 * 分页查询文章信息
 	 * 
 	 * @param pageNoStr
 	 * @param pageSizeStr
-	 * @param sortStr
-	 * @param modelMap
 	 * @return
 	 */
 	@GetMapping
-	@ApiOperation(value = "分页查询用户", notes = "分页查询用户信息")
+	@ApiOperation(value = "分页查询文章", notes = "分页查询文章信息")
 	public ModelMap listUserPage(@RequestParam(value = "pageNo", required = false, defaultValue = "0") String pageNoStr,
 			@RequestParam(value = "pageSize", required = false, defaultValue = "5") String pageSizeStr) {
 		ModelMap modelMap = new ModelMap();
@@ -162,25 +165,25 @@ public class UserApi {
 		}
 
 		PageRequest pageable = new PageRequest(pageNo, pageSize);
-		Page<User> userPage = userRepositroy.findAll(pageable);
-		modelMap.addAttribute("page", userPage);
+		Page<Article> articlePage = articleRepositroy.findAll(pageable);
+		modelMap.addAttribute("page", articlePage);
 		return modelMap;
 	}
 
 	/**
-	 * 按用户名条件分页查询用户信息
+	 * 按文章名条件分页查询文章信息
 	 * 
 	 * @param pageNoStr
 	 * @param pageSizeStr
-	 * @param name
+	 * @param keyWord
 	 * @return
 	 */
 	@GetMapping("p")
-	@ApiOperation(value = "条件查询用户", notes = "按用户名条件分页查询用户信息")
+	@ApiOperation(value = "条件查询文章", notes = "按文章名条件分页查询文章信息")
 	public ModelMap listUserPageByParameter(
 			@RequestParam(value = "pageNo", required = false, defaultValue = "0") String pageNoStr,
 			@RequestParam(value = "pageSize", required = false, defaultValue = "5") String pageSizeStr,
-			@RequestParam(value = "name", required = false, defaultValue = "") String name) {
+			@RequestParam(value = "keyWord", required = false, defaultValue = "") String keyWord) {
 		ModelMap modelMap = new ModelMap();
 		int pageNo = 1;
 		int pageSize = Integer.parseInt(pageSizeStr);
@@ -193,8 +196,8 @@ public class UserApi {
 		}
 
 		PageRequest pageable = new PageRequest(pageNo, pageSize);
-		Page<User> userPage = userRepositroy.findUsersByNameContains(name, pageable);
-		modelMap.addAttribute("page", userPage);
+		Page<Article> articlePage = articleRepositroy.findArticlesByTitleContainsOrContentContains(keyWord, pageable);
+		modelMap.addAttribute("page", articlePage);
 		return modelMap;
 	}
 
