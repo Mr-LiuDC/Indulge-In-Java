@@ -44,7 +44,7 @@ public class CommentApi {
 	 */
 	@PostMapping()
 	@ApiOperation(value = "新增评论", notes = "新增评论信息")
-	public ModelMap savecomment(@RequestParam String content, @RequestParam String parent_comment_id,
+	public ModelMap savecomment(@RequestParam String content, @RequestParam(required = false) String parent_comment_id,
 			@RequestParam String articleId, @RequestParam String userId) {
 		ModelMap modelMap = new ModelMap();
 		Comment comment = new Comment();
@@ -52,8 +52,11 @@ public class CommentApi {
 
 		Article article = articleRepositroy.getOne(Long.parseLong(articleId));
 		comment.setArticle(article);
-		Comment parentComment = commentRepositroy.getOne(Long.parseLong(parent_comment_id));
-		comment.setComment(parentComment);
+		Comment parentComment;
+		if (parent_comment_id != null) {
+			parentComment = commentRepositroy.getOne(Long.parseLong(parent_comment_id));
+			comment.setComment(parentComment);
+		}
 		User user = userRepositroy.getOne(Long.parseLong(userId));
 		comment.setUser(user);
 		Comment saveResult = commentRepositroy.save(comment);
