@@ -3,6 +3,7 @@ package springboot.domain;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -38,7 +39,7 @@ public class Article implements Serializable {
 	@ApiModelProperty(value = "文章内容")
 	private String content;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@ApiModelProperty(value = "文章作者")
 	private User user;
 

@@ -3,6 +3,7 @@ package springboot.domain;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,11 +41,11 @@ public class Comment implements Serializable {
 	@ApiModelProperty(value = "上一评论ID")
 	private Comment comment;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@ApiModelProperty(value = "文章ID")
 	private Article article;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@ApiModelProperty(value = "用户ID")
 	private User user;
 
