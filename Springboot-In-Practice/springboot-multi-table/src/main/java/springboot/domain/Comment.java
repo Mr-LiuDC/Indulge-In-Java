@@ -14,12 +14,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 留言评论Comment
+ * 
+ * @author LiuDeCai
+ *
+ */
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Comment implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	@Id

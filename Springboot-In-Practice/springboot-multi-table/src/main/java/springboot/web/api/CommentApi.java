@@ -22,6 +22,12 @@ import springboot.repositroy.ArticleRepositroy;
 import springboot.repositroy.CommentRepositroy;
 import springboot.repositroy.UserRepositroy;
 
+/**
+ * 留言评论API
+ * 
+ * @author LiuDeCai
+ *
+ */
 @RestController
 @RequestMapping(value = "/api/comment")
 @Api("评论操作接口")

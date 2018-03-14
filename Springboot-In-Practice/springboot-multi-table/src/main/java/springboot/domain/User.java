@@ -12,12 +12,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 用户User
+ * 
+ * @author LiuDeCai
+ *
+ */
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	@Id

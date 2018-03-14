@@ -13,6 +13,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 文章Article
+ * 
+ * @author LiuDeCai
+ *
+ */
 @Entity
 @Data
 @AllArgsConstructor
