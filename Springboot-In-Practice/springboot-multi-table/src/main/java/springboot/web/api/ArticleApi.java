@@ -196,7 +196,8 @@ public class ArticleApi {
 		}
 
 		PageRequest pageable = new PageRequest(pageNo, pageSize);
-		Page<Article> articlePage = articleRepositroy.findArticlesByTitleContainsOrContentContains(keyWord, pageable);
+		Page<Article> articlePage = articleRepositroy.findArticlesByTitleContainingAndContentContaining(keyWord,
+				keyWord, pageable);
 		modelMap.addAttribute("page", articlePage);
 		return modelMap;
 	}

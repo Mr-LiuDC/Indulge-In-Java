@@ -8,6 +8,6 @@ import springboot.domain.Article;
 
 public interface ArticleRepositroy extends JpaRepository<Article, Long> {
 
-	Page<Article> findArticlesByTitleContainsOrContentContains(String keyWord, Pageable pageable);
+	Page<Article> findArticlesByTitleContainingAndContentContaining(String title, String content, Pageable pageable);
 
 }
