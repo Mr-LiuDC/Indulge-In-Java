@@ -1,5 +1,7 @@
 package springboot.web.api;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -167,6 +169,10 @@ public class ArticleApi {
 		PageRequest pageable = new PageRequest(pageNo, pageSize);
 		Page<Article> articlePage = articleRepositroy.findAll(pageable);
 		modelMap.addAttribute("page", articlePage);
+		modelMap.addAttribute("sysStatus", "1");
+		modelMap.addAttribute("apiStatus", "1");
+		modelMap.addAttribute("info", "分页信息获取成功");
+		modelMap.addAttribute("timestamp", new Date());
 		return modelMap;
 	}
 
