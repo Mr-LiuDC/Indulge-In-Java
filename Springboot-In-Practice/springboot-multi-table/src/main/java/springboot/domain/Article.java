@@ -1,6 +1,7 @@
 package springboot.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -43,5 +44,8 @@ public class Article implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@ApiModelProperty(value = "文章作者")
 	private User user;
+	
+	@ApiModelProperty(value = "创建时间")
+	private Date createTime;
 
 }

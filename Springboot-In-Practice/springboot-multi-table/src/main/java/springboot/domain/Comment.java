@@ -1,6 +1,7 @@
 package springboot.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -49,5 +50,8 @@ public class Comment implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@ApiModelProperty(value = "用户ID")
 	private User user;
+	
+	@ApiModelProperty(value = "创建时间")
+	private Date createTime;
 
 }
