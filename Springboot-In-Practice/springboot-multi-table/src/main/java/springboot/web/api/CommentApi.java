@@ -26,6 +26,7 @@ import springboot.repositroy.UserRepositroy;
  * 留言评论API
  * 
  * @author LiuDeCai
+ * @date 2018/04/06
  *
  */
 @RestController
@@ -50,7 +51,7 @@ public class CommentApi {
 	 */
 	@PostMapping()
 	@ApiOperation(value = "新增评论", notes = "新增评论信息")
-	public ModelMap savecomment(@RequestParam String content, @RequestParam(required = false) String parent_comment_id,
+	public ModelMap savecomment(@RequestParam String content, @RequestParam(required = false) String parentCommentId,
 			@RequestParam String articleId, @RequestParam String userId) {
 		ModelMap modelMap = new ModelMap();
 		Comment comment = new Comment();
@@ -59,8 +60,8 @@ public class CommentApi {
 		Article article = articleRepositroy.getOne(Long.parseLong(articleId));
 		comment.setArticle(article);
 		Comment parentComment;
-		if (parent_comment_id != null) {
-			parentComment = commentRepositroy.getOne(Long.parseLong(parent_comment_id));
+		if (parentCommentId != null) {
+			parentComment = commentRepositroy.getOne(Long.parseLong(parentCommentId));
 			comment.setComment(parentComment);
 		}
 		User user = userRepositroy.getOne(Long.parseLong(userId));
@@ -132,6 +133,12 @@ public class CommentApi {
 		}
 	}
 
+	/**
+	 * 根据ID查询留言评论信息
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("{id}")
 	@ApiOperation(value = "查询评论", notes = "根据ID查询评论信息")
 	public ModelMap getcommentById(@PathVariable String id) {
@@ -205,7 +212,7 @@ public class CommentApi {
 		}
 
 		PageRequest pageable = new PageRequest(pageNo, pageSize);
-		Page<Comment> commentPage = commentRepositroy.findCommentsByArticle_Id(Long.parseLong(articleId), pageable);
+		Page<Comment> commentPage = commentRepositroy.findCommentsByArticleId(Long.parseLong(articleId), pageable);
 		modelMap.addAttribute("page", commentPage);
 		return modelMap;
 	}

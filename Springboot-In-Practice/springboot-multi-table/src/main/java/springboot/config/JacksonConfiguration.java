@@ -8,6 +8,13 @@ import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 
+/**
+ * JacksonConfiguration
+ * 
+ * @author LiuDeCai
+ * @date 2018/04/06
+ *
+ */
 @Configuration
 public class JacksonConfiguration {
 
@@ -22,11 +29,11 @@ public class JacksonConfiguration {
 	}
 
 	/**
-	 * 与上面效果等同
+	 * 与上面效果等同 
+	 * 加上@Bean 与上面的方式二选一
 	 * 
 	 * @return
 	 */
-	// @Bean 	// 与上面的方式二选一
 	public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
 		MappingJackson2HttpMessageConverter jsonConverter = new MappingJackson2HttpMessageConverter();
 		ObjectMapper objectMapper = jsonConverter.getObjectMapper();

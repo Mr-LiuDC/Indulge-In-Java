@@ -14,9 +14,16 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+/**
+ * SpringbootMultiTableApplicationTests
+ * 
+ * @author LiuDeCai
+ * @date 2018/04/06
+ *
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SpringbootMultiTableApplicationTests {
+public class SpringbootMultiTableApplicationTest {
 
 	@Autowired
 	private WebApplicationContext context;
@@ -24,7 +31,8 @@ public class SpringbootMultiTableApplicationTests {
 
 	@Before
 	public void setUp() throws Exception {
-		mvc = MockMvcBuilders.webAppContextSetup(context).build(); // 构造MockMvc
+		// 构造MockMvc
+		mvc = MockMvcBuilders.webAppContextSetup(context).build();
 	}
 
 	@Test
