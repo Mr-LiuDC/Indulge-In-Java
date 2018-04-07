@@ -31,7 +31,7 @@ public class SwaggerConfiguration {
 
 	private ApiInfo apiInfo() {
 		Contact contact = new Contact("刘德财", "", "liudecai@postop.cn");
-		return new ApiInfoBuilder().title("尚医脂本家项目").description("RESTful API后端接口").contact(contact).build();
+		return new ApiInfoBuilder().title("springboot-multi-table").description("RESTful API后端接口").contact(contact).build();
 	}
 
 }

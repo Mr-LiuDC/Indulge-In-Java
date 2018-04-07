@@ -1,8 +1,12 @@
 package springboot.web.api;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.ui.ModelMap;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -38,6 +43,9 @@ public class ArticleApi {
 	@Autowired
 	private UserRepositroy userRepositroy;
 
+	@Value("${spring.http.multipart.location}")
+	private String tmpDir;
+
 	/**
 	 * 新增文章信息
 	 * 
@@ -48,13 +56,25 @@ public class ArticleApi {
 	 */
 	@PostMapping()
 	@ApiOperation(value = "新增文章", notes = "新增文章信息")
-	public ModelMap saveArticle(@RequestParam String title, @RequestParam String content, @RequestParam String userId) {
+	public ModelMap saveArticle(@RequestParam String title, @RequestParam String content, @RequestParam String userId,
+			@RequestParam("cover") MultipartFile file) {
 		ModelMap modelMap = new ModelMap();
 		Article article = new Article();
+		article.setCreateTime(new Date());
 		article.setTitle(title);
+		article.setCover("");
 		article.setContent(content);
 		User user = userRepositroy.getOne(Long.parseLong(userId));
 		article.setUser(user);
+		try {
+			// TODO 文件上传
+			FileUtils.writeByteArrayToFile(new File(tmpDir + file.getOriginalFilename()), file.getBytes());
+			File tmp = new File(tmpDir + file.getOriginalFilename());
+			//tmp.
+			//file.getInputStream().;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		Article saveResult = articleRepositroy.save(article);
 		if (saveResult != null) {
 			modelMap.addAttribute("message", "成功添加文章");
