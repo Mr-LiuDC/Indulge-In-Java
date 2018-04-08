@@ -50,7 +50,7 @@ public class UserRestController {
     //		users.put(user.getId(), user);
     //		return user;
     //	}
-    public User insert(@Valid @RequestBody User user, BindingResult bindingResults) {
+    public User insert(User user, BindingResult bindingResults) {
         if (bindingResults.hasErrors()) {
             bindingResults.getAllErrors().forEach(bindingResult -> log.info(bindingResult.getDefaultMessage()));
         }
