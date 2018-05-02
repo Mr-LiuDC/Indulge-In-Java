@@ -1,22 +1,14 @@
 package springboot.web.api;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.*;
 import springboot.domain.User;
-import springboot.repositroy.UserRepositroy;
+import springboot.repositroy.UserRepository;
 
 /**
  * 用户操作API
@@ -29,14 +21,13 @@ import springboot.repositroy.UserRepositroy;
 public class UserApi {
 
     @Autowired
-    private UserRepositroy userRepositroy;
+    private UserRepository userRepository;
 
     /**
      * 新增用户信息
      *
      * @param name
      * @param password
-     * @param modelMap
      * @return
      */
     @PostMapping()
@@ -46,7 +37,7 @@ public class UserApi {
         User user = new User();
         user.setName(name);
         user.setPassword(password);
-        User saveResult = userRepositroy.save(user);
+        User saveResult = userRepository.save(user);
         if (saveResult != null) {
             modelMap.addAttribute("message", "成功添加用户信息");
             modelMap.addAttribute("user", saveResult);
@@ -60,7 +51,6 @@ public class UserApi {
      * 根据ID删除用户信息
      *
      * @param id
-     * @param modelMap
      * @return
      */
     @DeleteMapping("{id}")
@@ -69,11 +59,11 @@ public class UserApi {
         ModelMap modelMap = new ModelMap();
         try {
             Long idNum = Long.parseLong(id);
-            User user = userRepositroy.findOne(idNum);
+            User user = userRepository.findOne(idNum);
             if (user == null) {
                 modelMap.addAttribute("message", "要删除的用户不存在");
             }
-            userRepositroy.delete(user);
+            userRepository.delete(user);
             return modelMap.addAttribute("message", "成功删除用户");
         } catch (Exception e) {
             return modelMap.addAttribute("message", "参数不合法");
@@ -86,7 +76,6 @@ public class UserApi {
      * @param id
      * @param name
      * @param password
-     * @param modelMap
      * @return
      */
     @PutMapping("{id}")
@@ -95,13 +84,13 @@ public class UserApi {
         ModelMap modelMap = new ModelMap();
         try {
             Long idNum = Long.parseLong(id);
-            User user = userRepositroy.findOne(idNum);
+            User user = userRepository.findOne(idNum);
             if (user == null) {
                 modelMap.addAttribute("message", "要更新的用户不存在");
             }
             user.setName(name);
             user.setPassword(password);
-            User saveResult = userRepositroy.save(user);
+            User saveResult = userRepository.save(user);
             if (saveResult != null) {
                 modelMap.addAttribute("message", "成功更新用户信息");
                 modelMap.addAttribute("user", saveResult);
@@ -126,7 +115,7 @@ public class UserApi {
         ModelMap modelMap = new ModelMap();
         try {
             Long idNum = Long.parseLong(id);
-            User user = userRepositroy.findOne(idNum);
+            User user = userRepository.findOne(idNum);
             if (user == null) {
                 modelMap.addAttribute("message", "要查询的用户不存在");
             }
@@ -141,8 +130,6 @@ public class UserApi {
      *
      * @param pageNoStr
      * @param pageSizeStr
-     * @param sortStr
-     * @param modelMap
      * @return
      */
     @GetMapping
@@ -161,7 +148,7 @@ public class UserApi {
         }
 
         PageRequest pageable = new PageRequest(pageNo, pageSize);
-        Page<User> userPage = userRepositroy.findAll(pageable);
+        Page<User> userPage = userRepository.findAll(pageable);
         modelMap.addAttribute("page", userPage);
         return modelMap;
     }
@@ -192,7 +179,7 @@ public class UserApi {
         }
 
         PageRequest pageable = new PageRequest(pageNo, pageSize);
-        Page<User> userPage = userRepositroy.findUsersByNameContains(name, pageable);
+        Page<User> userPage = userRepository.findUsersByNameContains(name, pageable);
         modelMap.addAttribute("page", userPage);
         return modelMap;
     }
@@ -205,9 +192,11 @@ public class UserApi {
     @GetMapping("/new")
     public ModelMap getLast() {
         ModelMap modelMap = new ModelMap();
-        modelMap.addAttribute("last", userRepositroy.findFirstByOrderByCreateTimeDesc());
+        modelMap.addAttribute("last", userRepository.findFirstByOrderByCreateTimeDesc());
         return modelMap;
-    }/**
+    }
+
+    /**
      * 获取一条最旧记录
      *
      * @return
@@ -215,7 +204,7 @@ public class UserApi {
     @GetMapping("/oldest")
     public ModelMap getOldest() {
         ModelMap modelMap = new ModelMap();
-        modelMap.addAttribute("last", userRepositroy.findFirstByOrderByCreateTimeAsc());
+        modelMap.addAttribute("last", userRepository.findFirstByOrderByCreateTimeAsc());
         return modelMap;
     }
 

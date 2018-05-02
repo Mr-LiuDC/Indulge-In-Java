@@ -24,8 +24,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import springboot.domain.Article;
 import springboot.domain.User;
-import springboot.repositroy.ArticleRepositroy;
-import springboot.repositroy.UserRepositroy;
+import springboot.repositroy.ArticleRepository;
+import springboot.repositroy.UserRepository;
 
 /**
  * 文章操作API
@@ -39,9 +39,9 @@ import springboot.repositroy.UserRepositroy;
 public class ArticleApi {
 
 	@Autowired
-	private ArticleRepositroy articleRepositroy;
+	private ArticleRepository articleRepository;
 	@Autowired
-	private UserRepositroy userRepositroy;
+	private UserRepository userRepository;
 
 	@Value("${spring.http.multipart.location}")
 	private String tmpDir;
@@ -64,7 +64,7 @@ public class ArticleApi {
 		article.setTitle(title);
 		article.setCover("");
 		article.setContent(content);
-		User user = userRepositroy.getOne(Long.parseLong(userId));
+		User user = userRepository.getOne(Long.parseLong(userId));
 		article.setUser(user);
 		try {
 			// TODO 文件上传
@@ -75,7 +75,7 @@ public class ArticleApi {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		Article saveResult = articleRepositroy.save(article);
+		Article saveResult = articleRepository.save(article);
 		if (saveResult != null) {
 			modelMap.addAttribute("message", "成功添加文章");
 			modelMap.addAttribute("article", saveResult);
@@ -97,11 +97,11 @@ public class ArticleApi {
 		ModelMap modelMap = new ModelMap();
 		try {
 			Long idNum = Long.parseLong(id);
-			Article article = articleRepositroy.findOne(idNum);
+			Article article = articleRepository.findOne(idNum);
 			if (article == null) {
 				modelMap.addAttribute("message", "要删除的文章不存在");
 			}
-			articleRepositroy.delete(article);
+			articleRepository.delete(article);
 			return modelMap.addAttribute("message", "成功删除文章");
 		} catch (Exception e) {
 			return modelMap.addAttribute("message", "参数不合法");
@@ -123,13 +123,13 @@ public class ArticleApi {
 		ModelMap modelMap = new ModelMap();
 		try {
 			Long idNum = Long.parseLong(id);
-			Article article = articleRepositroy.findOne(idNum);
+			Article article = articleRepository.findOne(idNum);
 			if (article == null) {
 				modelMap.addAttribute("message", "要更新的文章不存在");
 			}
 			article.setTitle(title);
 			article.setContent(content);
-			Article saveResult = articleRepositroy.save(article);
+			Article saveResult = articleRepository.save(article);
 			if (saveResult != null) {
 				modelMap.addAttribute("message", "成功更新文章信息");
 				modelMap.addAttribute("article", saveResult);
@@ -154,7 +154,7 @@ public class ArticleApi {
 		ModelMap modelMap = new ModelMap();
 		try {
 			Long idNum = Long.parseLong(id);
-			Article article = articleRepositroy.findOne(idNum);
+			Article article = articleRepository.findOne(idNum);
 			if (article == null) {
 				modelMap.addAttribute("message", "要查询的文章不存在");
 			}
@@ -187,7 +187,7 @@ public class ArticleApi {
 		}
 
 		PageRequest pageable = new PageRequest(pageNo, pageSize);
-		Page<Article> articlePage = articleRepositroy.findAll(pageable);
+		Page<Article> articlePage = articleRepository.findAll(pageable);
 		modelMap.addAttribute("page", articlePage);
 		modelMap.addAttribute("sysStatus", "1");
 		modelMap.addAttribute("apiStatus", "1");
@@ -222,7 +222,7 @@ public class ArticleApi {
 		}
 
 		PageRequest pageable = new PageRequest(pageNo, pageSize);
-		Page<Article> articlePage = articleRepositroy.findArticlesByTitleContainingAndContentContaining(keyWord,
+		Page<Article> articlePage = articleRepository.findArticlesByTitleContainingAndContentContaining(keyWord,
 				keyWord, pageable);
 		modelMap.addAttribute("page", articlePage);
 		return modelMap;
