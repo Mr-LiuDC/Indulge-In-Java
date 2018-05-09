@@ -31,13 +31,13 @@
             <artifactId>simple-spring-memcached</artifactId>
             <version>4.0.0</version>
         </dependency>
-
+        -->
         <dependency>
             <groupId>com.google.code.simple-spring-memcached</groupId>
             <artifactId>spring-cache</artifactId>
-            <version>3.6.0</version>
+            <version>4.0.0</version>
         </dependency>
-        -->
+
         <dependency>
             <groupId>com.google.code.simple-spring-memcached</groupId>
             <artifactId>spymemcached-provider</artifactId>
