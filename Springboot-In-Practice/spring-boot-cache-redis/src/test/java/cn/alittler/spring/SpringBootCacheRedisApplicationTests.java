@@ -7,7 +7,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author LiuDeCai
@@ -25,6 +28,20 @@ public class SpringBootCacheRedisApplicationTests {
     private DemoEntityRepository demoEntityRepository;
     @Autowired
     private DemoEntityService demoEntityService;
+    @Autowired
+    RedisTemplate<Object, Object> template;
+
+    @Test
+    public void testTemplate() {
+        template.opsForValue().set("test-key", "刘德财", 10, TimeUnit.SECONDS);
+        System.out.println(template.opsForValue().get("test-key"));
+        try {
+            Thread.sleep(10000);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        System.out.println(template.opsForValue().get("test-key"));
+    }
 
     public void testRepo() {
 
