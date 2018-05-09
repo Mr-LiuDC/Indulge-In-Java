@@ -34,6 +34,7 @@ public class JacksonConfiguration {
 	 * 
 	 * @return
 	 */
+	@Bean
 	public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
 		MappingJackson2HttpMessageConverter jsonConverter = new MappingJackson2HttpMessageConverter();
 		ObjectMapper objectMapper = jsonConverter.getObjectMapper();
