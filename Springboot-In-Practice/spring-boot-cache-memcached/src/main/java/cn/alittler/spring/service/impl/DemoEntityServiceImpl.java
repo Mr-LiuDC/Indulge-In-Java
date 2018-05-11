@@ -57,7 +57,7 @@ public class DemoEntityServiceImpl implements DemoEntityService {
     }
 
     @Override
-    @Cacheable(key = "#root.targetClass.toString()+#name.hashCode()", unless = "#result == null")
+    @Cacheable(key = "#root.targetClass.toString()+#name", unless = "#result == null")
     public List<DemoEntity> findByName(String name) {
         return demoEntityRepository.findByNameContains(name);
     }
@@ -65,6 +65,11 @@ public class DemoEntityServiceImpl implements DemoEntityService {
     @Override
     @Cacheable(key = "#root.targetClass.toString()", unless = "#result == null")
     public List<DemoEntity> findAll() {
+        return demoEntityRepository.findAll();
+    }
+
+    @Override
+    public List<DemoEntity> findAllWithoutCache() {
         return demoEntityRepository.findAll();
     }
 }
